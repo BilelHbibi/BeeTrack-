@@ -1,0 +1,20 @@
+# Angular frontend
+beetrack-Projet/node_modules/
+beetrack-Projet/.angular/
+beetrack-Projet/dist/
+
+# Spring Boot backend
+beetrack-spring-master/target/
+beetrack-spring-master/.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+*.env

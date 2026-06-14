@@ -1,0 +1,28 @@
+<div class="p-6 w-96">
+    <h2 class="text-xl font-semibold mb-4">Ajouter un rucher</h2>
+
+    <form [formGroup]="rucherForm" class="flex flex-col gap-4">
+        <mat-form-field appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input matInput placeholder="Nom du rucher" formControlName="nom" />
+            <mat-error *ngIf="rucherForm.get('nom')?.hasError('required')">
+                Nom obligatoire
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Localisation</mat-label>
+            <input matInput placeholder="Ex: Tunis" formControlName="localisation" />
+            <mat-error *ngIf="rucherForm.get('localisation')?.hasError('required')">
+                Localisation obligatoire
+            </mat-error>
+        </mat-form-field>
+
+        <div class="flex justify-end gap-2 mt-4">
+            <button mat-button (click)="onCancel()">Annuler</button>
+            <button mat-flat-button color="primary" (click)="onSave()" [disabled]="rucherForm.invalid">
+                Ajouter
+            </button>
+        </div>
+    </form>
+</div>
