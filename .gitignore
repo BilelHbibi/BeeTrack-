@@ -1,11 +1,10 @@
 # Angular frontend
-beetrack-Projet/node_modules/
-beetrack-Projet/.angular/
-beetrack-Projet/dist/
+frontend/node_modules/
+frontend/.angular/
+frontend/dist/
 
 # Spring Boot backend
-beetrack-spring-master/target/
-beetrack-spring-master/.mvn/wrapper/maven-wrapper.jar
+backend/target/
 
 # IDE
 .idea/

@@ -1,0 +1,78 @@
+<!-- Sidebar statique (style ApiManager Pro) -->
+<div id="sidebar" class="sidebar-transition w-72 bg-gradient-to-b from-green-900 to-green-800 text-white flex-shrink-0 shadow-xl h-full fixed left-0 top-0 z-50 print:hidden overflow-y-auto">
+
+    <!-- Header avec logo et titre -->
+    <div class="p-6 border-b border-green-700">
+        <div class="flex items-center space-x-3 mb-8">
+            <div class="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-honeycomb text-green-900 text-lg"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold">BeeTrack</h1>
+                <p class="text-green-200 text-xs">Gestion apicole intelligente</p>
+            </div>
+        </div>
+
+        <!-- Menu de navigation -->
+        <nav class="space-y-1">
+            <a routerLink="dashboard"  *ngIf="!isAdmin" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-tree group-hover:rotate-6 transition"></i>
+                <span>Dashboard</span>
+            </a>
+            <a routerLink="ruchers"  *ngIf="!isAdmin" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-tree group-hover:rotate-6 transition"></i>
+                <span>Gestion des ruchers</span>
+            </a>
+            <a routerLink="ruches" *ngIf="!isAdmin" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-bee group-hover:animate-bounce"></i>
+                <span>Gestion des ruches</span>
+            </a>
+            <a routerLink="inspection" *ngIf="!isAdmin" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Inspections</span>
+            </a>
+            <a routerLink="recoltte" *ngIf="!isAdmin" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-jar"></i>
+                <span>Récoltes</span>
+            </a>
+            <a routerLink="taches" *ngIf="!isAdmin" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-tasks"></i>
+                <span>Tâches programmées</span>
+            </a>
+            <a routerLink="finance" *ngIf="!isAdmin" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-chart-line"></i>
+                <span>finance</span>
+            </a>
+            <a routerLink="profile"  class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-coins"></i>
+                <span>profile</span>
+            </a>
+            <a routerLink="users" *ngIf="isAdmin" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-users"></i>
+                <span>Utilisateurs</span>
+            </a>
+            <a  (click)="logOut()" class="flex items-center space-x-3 px-4 py-3 hover:bg-green-700 rounded-xl transition group">
+                <i class="fas fa-cog"></i>
+                <span>log out </span>
+            </a>
+
+        </nav>
+    </div>
+
+    <!-- Section utilisateur en bas de la sidebar -->
+    <div class="mt-auto p-6 border-t border-green-700">
+        <div class="flex items-center space-x-3">
+            <img src="https://placehold.co/40x40/4ade80/ffffff?text=U" alt="User" class="w-10 h-10 rounded-full border-2 border-green-500">
+            <div class="flex-1">
+                <p class="font-medium">{{ user?.sub }}</p>
+                <div class="flex items-center space-x-1">
+                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <p class="text-xs text-green-200">En ligne</p>
+                </div>
+            </div>
+            <button class="text-green-200 hover:text-white">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </div>
+</div>

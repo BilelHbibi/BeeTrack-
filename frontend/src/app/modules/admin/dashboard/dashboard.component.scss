@@ -1,0 +1,26 @@
+/* dashboard.component.css */
+.chart-wrapper {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    /* ✅ FIX : empêche le redimensionnement infini */
+    height: 500px; /* ou min-height */
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-wrapper h3 {
+    text-align: center;
+    margin: 0 0 16px;
+    color: #333;
+}
+
+/* ✅ Canvas prend tout l'espace restant */
+.chart-wrapper canvas {
+    flex: 1;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0; /* important pour éviter le overflow */
+}
