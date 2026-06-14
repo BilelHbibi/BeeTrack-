@@ -1,10 +1,10 @@
 # Angular frontend
-frontend/node_modules/
-frontend/.angular/
-frontend/dist/
+beetrack-Projet/frontend/node_modules/
+beetrack-Projet/frontend/.angular/
+beetrack-Projet/frontend/dist/
 
 # Spring Boot backend
-backend/target/
+beetrack-Projet/backend/target/
 
 # IDE
 .idea/
