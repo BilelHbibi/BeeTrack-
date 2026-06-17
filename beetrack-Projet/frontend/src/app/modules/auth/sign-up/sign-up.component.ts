@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
@@ -18,7 +19,7 @@ import { AuthService } from 'app/core/auth/auth.service';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations,
     standalone   : true,
-    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule, MatSelectModule],
 })
 export class AuthSignUpComponent implements OnInit
 {
@@ -54,9 +55,10 @@ export class AuthSignUpComponent implements OnInit
         // Create the form
         this.signUpForm = this._formBuilder.group({
                 nom      : ['', Validators.required],
+                prenom   : ['', Validators.required],
                 email     : ['', [Validators.required, Validators.email]],
                 password: ['', Validators.required],
-                prenom   : [''],
+                role     : ['CLIENT', Validators.required],
                 agreements: ['', Validators.requiredTrue],
             },
         );
@@ -84,11 +86,14 @@ export class AuthSignUpComponent implements OnInit
         this.showAlert = false;
 
         // Sign up
-        this._authService.signUp(this.signUpForm.value)
-            .subscribe(
+        const formVal = this.signUpForm.value;
+        this._authService.signUp({
+            nom: formVal.nom, prenom: formVal.prenom,
+            email: formVal.email, password: formVal.password,
+            role: formVal.role
+        }).subscribe(
                 (response) =>
                 {
-                    // Navigate to the confirmation required page
                     this._router.navigateByUrl('/sign-in');
                 },
                 (response) =>

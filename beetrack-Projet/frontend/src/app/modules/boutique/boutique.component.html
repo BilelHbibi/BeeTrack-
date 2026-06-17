@@ -1,0 +1,86 @@
+<div class="flex flex-col flex-auto min-w-0 bg-gray-50">
+
+  <!-- Hero banner -->
+  <div class="bg-amber-700 text-white px-8 py-10">
+    <h1 class="text-4xl font-bold">🍯 Boutique BeeTrack</h1>
+    <p class="text-amber-200 mt-2 text-lg">Produits naturels d'apiculture — directs du rucher à votre table</p>
+  </div>
+
+  <div class="p-6 sm:p-8">
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex justify-center items-center h-64">
+      <div class="text-center">
+        <div class="text-6xl mb-4">🐝</div>
+        <p class="text-amber-600 font-medium">Chargement des produits...</p>
+      </div>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="!loading && produits.length === 0"
+         class="flex flex-col items-center justify-center h-64 text-gray-400">
+      <div class="text-7xl mb-4">🪣</div>
+      <p class="text-xl font-medium">Aucun produit disponible pour le moment</p>
+      <p class="text-sm mt-1">Revenez bientôt — nos apiculteurs travaillent !</p>
+    </div>
+
+    <!-- Grid produits -->
+    <div *ngIf="!loading && produits.length > 0"
+         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+
+      <div *ngFor="let produit of produits"
+           class="bg-white rounded-2xl shadow hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden border border-amber-100">
+
+        <!-- Image / icône -->
+        <div class="h-44 flex items-center justify-center relative"
+             [ngClass]="getBgClass(produit.type)">
+          <img *ngIf="produit.imageUrl" [src]="produit.imageUrl" [alt]="produit.nom"
+               class="h-full w-full object-cover absolute inset-0" />
+          <span *ngIf="!produit.imageUrl" class="text-7xl select-none">{{ getTypeEmoji(produit.type) }}</span>
+          <!-- Badge type -->
+          <span class="absolute top-3 right-3 text-xs font-semibold px-2 py-1 rounded-full
+                       bg-white/90 text-amber-800 shadow">
+            {{ getTypeLabel(produit.type) }}
+          </span>
+        </div>
+
+        <!-- Contenu -->
+        <div class="flex flex-col flex-auto p-4">
+          <h3 class="text-base font-bold text-gray-900">{{ produit.nom }}</h3>
+          <p class="text-sm text-gray-500 mt-1 flex-auto line-clamp-2">{{ produit.description }}</p>
+
+          <div class="flex items-center justify-between mt-3">
+            <span class="text-2xl font-bold text-amber-600">{{ produit.prix }} DT</span>
+            <span class="text-xs text-gray-400 flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/>
+              </svg>
+              {{ produit.quantiteDisponible }} kg dispo
+            </span>
+          </div>
+
+          <p class="text-xs text-gray-400 mt-2">
+            Par {{ produit.apiculteur?.nom }} {{ produit.apiculteur?.prenom }}
+          </p>
+        </div>
+
+        <!-- Bouton commander -->
+        <div class="px-4 pb-4">
+          <button class="w-full py-2.5 rounded-xl font-semibold text-white transition-colors
+                         bg-amber-600 hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed
+                         flex items-center justify-center gap-2"
+                  [disabled]="produit.quantiteDisponible === 0"
+                  (click)="commander(produit)">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            {{ produit.quantiteDisponible === 0 ? 'Rupture de stock' : 'Commander' }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

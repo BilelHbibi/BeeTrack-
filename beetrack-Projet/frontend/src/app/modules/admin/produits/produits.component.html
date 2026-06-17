@@ -1,0 +1,90 @@
+<div class="flex flex-col flex-auto min-w-0 p-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Mes Produits</h1>
+            <p class="text-gray-500 mt-1">Gérez votre catalogue de produits</p>
+        </div>
+        <button mat-flat-button color="primary" class="rounded-xl" (click)="ajouterProduit()">
+            <mat-icon>add</mat-icon>
+            <span class="ml-2">Ajouter un produit</span>
+        </button>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex justify-center p-12">
+        <mat-icon class="animate-spin text-amber-400 text-5xl">refresh</mat-icon>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!loading && produits.length === 0"
+         class="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-2xl text-gray-400">
+        <mat-icon class="text-6xl mb-4">inventory_2</mat-icon>
+        <p class="text-xl font-semibold">Aucun produit encore</p>
+        <p class="text-sm mt-1">Cliquez sur "Ajouter un produit" pour commencer</p>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!loading && produits.length > 0" class="bg-white rounded-2xl shadow overflow-hidden">
+        <table mat-table [dataSource]="produits" class="w-full">
+
+            <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef class="font-bold">Produit</th>
+                <td mat-cell *matCellDef="let p">
+                    <div class="flex items-center gap-3 py-2">
+                        <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-xl">
+                            {{ p.type?.startsWith('miel') ? '🍯' : p.type === 'cire' ? '🕯️' : '🌿' }}
+                        </div>
+                        <div>
+                            <p class="font-semibold">{{ p.nom }}</p>
+                            <p class="text-xs text-gray-400 line-clamp-1">{{ p.description }}</p>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef class="font-bold">Type</th>
+                <td mat-cell *matCellDef="let p">
+                    <span class="px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                        {{ getTypeLabel(p.type) }}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="prix">
+                <th mat-header-cell *matHeaderCellDef class="font-bold">Prix</th>
+                <td mat-cell *matCellDef="let p">
+                    <span class="font-bold text-amber-600">{{ p.prix }} DT</span>
+                    <span class="text-xs text-gray-400">/kg</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="stock">
+                <th mat-header-cell *matHeaderCellDef class="font-bold">Stock</th>
+                <td mat-cell *matCellDef="let p">
+                    <span [class]="p.quantiteDisponible > 5 ? 'text-green-600' : 'text-red-500'"
+                          class="font-semibold">
+                        {{ p.quantiteDisponible }} kg
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="font-bold">Actions</th>
+                <td mat-cell *matCellDef="let p">
+                    <button mat-icon-button color="primary" (click)="modifierProduit(p)" matTooltip="Modifier">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="supprimerProduit(p)" matTooltip="Supprimer">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                class="hover:bg-amber-50 transition-colors"></tr>
+        </table>
+    </div>
+</div>

@@ -40,22 +40,28 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody ResgisterRequest request) {
         try {
+            Role role = Role.APICULTEUR;
+            if ("CLIENT".equalsIgnoreCase(request.getRole())) {
+                role = Role.CLIENT;
+            }
+
             User user = User.builder()
                     .nom(request.getNom())
                     .prenom(request.getPrenom())
                     .email(request.getEmail())
                     .motDePasse(request.getPassword())
-                    .role(Role.APICULTEUR)
+                    .role(role)
                     .build();
 
             User savedUser = userService.createUser(user);
 
-            String token = jwtUtil.generateToken(savedUser.getEmail(), savedUser.getRole().toString());
+            String token = jwtUtil.generateToken(savedUser.getEmail(), savedUser.getRole().toString(), savedUser.getId());
 
             AuthResponse response = new AuthResponse();
             response.setToken(token);
             response.setEmail(savedUser.getEmail());
             response.setRole(savedUser.getRole().toString());
+            response.setUserId(savedUser.getId());
 
             return ResponseEntity.ok(response);
 
@@ -90,13 +96,14 @@ public class AuthController {
             }
 
             // 3. Generate JWT token
-            String token = jwtUtil.generateToken(user.getEmail(), user.getRole().toString());
+            String token = jwtUtil.generateToken(user.getEmail(), user.getRole().toString(), user.getId());
 
             // 4. Return response
             AuthResponse response = new AuthResponse();
             response.setToken(token);
             response.setEmail(user.getEmail());
             response.setRole(user.getRole().toString());
+            response.setUserId(user.getId());
 
             return ResponseEntity.ok(response);
 

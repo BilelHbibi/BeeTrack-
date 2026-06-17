@@ -10,7 +10,7 @@ export const environment = {
     production: false,
     isMobile: false,
     contact_email: 'contact',
-    api: 'http://localhost:8080',
+    api: 'http://localhost:8085',
     code: 'cek',
     env: 'LOCAL',
 };

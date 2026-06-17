@@ -74,6 +74,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/recoltes/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/interventions/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/dashboard/etat-ruches/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/produits/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/produits/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/produits/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/produits/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/commandes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/commandes/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/commandes/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/interventions/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/interventions/**").permitAll()

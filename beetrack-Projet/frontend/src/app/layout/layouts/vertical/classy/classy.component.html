@@ -6,7 +6,7 @@
     class="dark bg-gray-900 print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
-    [navigation]="navigation?.default"
+    [navigation]="navItems"
     [opened]="!isScreenSmall">
     <!-- Navigation header hook -->
     <ng-container fuseVerticalNavigationContentHeader>
@@ -67,19 +67,13 @@
             (click)="toggleNavigation('mainNavigation')">
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
-        <!-- Components -->
-        <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
-            <languages></languages>
-            <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
-            <search [appearance]="'bar'"></search>
-            <shortcuts></shortcuts>
-            <messages></messages>
-            <button
-                class="lg:hidden"
-                mat-icon-button
-                (click)="quickChat.toggle()">
-                <mat-icon [svgIcon]="'heroicons_outline:chat-bubble-left-right'"></mat-icon>
-            </button>
+        <!-- App title -->
+        <div class="flex items-center ml-3">
+            <span class="text-lg font-bold text-amber-600">🍯 BeeTrack</span>
+        </div>
+        <!-- Right side - notifications only -->
+        <div class="flex items-center pl-2 ml-auto space-x-2">
+            <notifications></notifications>
         </div>
     </div>
 
@@ -97,5 +91,3 @@
 
 </div>
 
-<!-- Quick chat -->
-<quick-chat #quickChat="quickChat"></quick-chat>

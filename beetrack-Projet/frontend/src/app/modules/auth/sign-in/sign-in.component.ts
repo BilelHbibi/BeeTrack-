@@ -31,89 +31,57 @@ export class AuthSignInComponent implements OnInit
     signInForm: UntypedFormGroup;
     showAlert: boolean = false;
 
-    /**
-     * Constructor
-     */
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-    )
-    {
-    }
+    ) {}
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
     ngOnInit(): void
     {
-        // Create the form
         this.signInForm = this._formBuilder.group({
-            email     : ['hughes.brian@company.com', [Validators.required, Validators.email]],
-            motDePasse  : ['admin', Validators.required],
-            rememberMe: [''],
+            email      : ['', [Validators.required, Validators.email]],
+            motDePasse : ['', Validators.required],
+            rememberMe : [''],
         });
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Sign in
-     */
     signIn(): void
     {
-        // Return if the form is invalid
-        if ( this.signInForm.invalid )
-        {
-            return;
-        }
+        if (this.signInForm.invalid) return;
 
-        // Disable the form
         this.signInForm.disable();
-
-        // Hide the alert
         this.showAlert = false;
 
-        // Sign in
-        this._authService.signIn(this.signInForm.value)
-            .subscribe(
-                (response:any) =>
-                {
-                    localStorage.setItem('accessToken', response.token);
+        this._authService.signIn(this.signInForm.value).subscribe(
+            (response: any) =>
+            {
+                // Stocker le token ET le rôle dans localStorage
+                localStorage.setItem('accessToken', response.token);
+                localStorage.setItem('userRole', response.role);
+                localStorage.setItem('userId', response.userId?.toString() || '');
 
-                    // Set the redirect url.
-                    // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                    // to the correct page after a successful sign in. This way, that url can be set via
-                    // routing file and we don't have to touch here.
-                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
-
-                    // Navigate to the redirect url
-                    this._router.navigateByUrl('/ruchers');
-                },
-                (response) =>
-                {
-                    // Re-enable the form
-                    this.signInForm.enable();
-
-                    // Reset the form
-                    this.signInNgForm.resetForm();
-
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Wrong email or password',
-                    };
-
-                    // Show the alert
-                    this.showAlert = true;
-                },
-            );
+                // Redirection avec rechargement complet (force la navigation à se recalculer par rôle)
+                const role = response.role;
+                if (role === 'CLIENT') {
+                    window.location.href = '/boutique';
+                } else if (role === 'APICULTEUR') {
+                    window.location.href = '/mes-produits';
+                } else {
+                    window.location.href = '/dashboard';
+                }
+            },
+            () =>
+            {
+                this.signInForm.enable();
+                this.signInNgForm.resetForm();
+                this.alert = {
+                    type   : 'error',
+                    message: 'Email ou mot de passe incorrect.',
+                };
+                this.showAlert = true;
+            },
+        );
     }
 }

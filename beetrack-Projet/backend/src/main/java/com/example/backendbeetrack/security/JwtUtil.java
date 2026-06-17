@@ -23,13 +23,19 @@ public class JwtUtil {
     }
 
     public String generateToken(String email, String role) {
-        return Jwts.builder()
+        return generateToken(email, role, null);
+    }
+
+    public String generateToken(String email, String role, Long userId) {
+        var builder = Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getKey(), SignatureAlgorithm.HS512)
-                .compact();
+                .setExpiration(new Date(System.currentTimeMillis() + expiration));
+        if (userId != null) {
+            builder.claim("userId", userId);
+        }
+        return builder.signWith(getKey(), SignatureAlgorithm.HS512).compact();
     }
 
     public String getEmailFromToken(String token) {

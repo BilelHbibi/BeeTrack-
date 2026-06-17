@@ -97,13 +97,13 @@
                     </mat-error>
                 </mat-form-field>
 
-                <!-- Company field -->
+                <!-- Role field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Company</mat-label>
-                    <input
-                        id="company-confirm"
-                        matInput
-                        [formControlName]="'company'">
+                    <mat-label>Je suis</mat-label>
+                    <mat-select [formControlName]="'role'">
+                        <mat-option value="CLIENT">🛒 Client — Je veux acheter des produits</mat-option>
+                        <mat-option value="APICULTEUR">🐝 Apiculteur — Je veux vendre mes produits</mat-option>
+                    </mat-select>
                 </mat-form-field>
 
                 <!-- ToS and PP -->

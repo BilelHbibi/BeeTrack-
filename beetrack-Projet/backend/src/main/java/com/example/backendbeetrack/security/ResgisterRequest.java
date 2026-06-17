@@ -9,4 +9,5 @@ public class ResgisterRequest {
     private String prenom;
     private String email;
     private String password;
+    private String role; // APICULTEUR, CLIENT (ADMIN uniquement via DB)
 }

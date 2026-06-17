@@ -45,12 +45,12 @@ export const appRoutes: Route[] = [
         ]
     },
 
-    // ✅ TOUTES LES ROUTES PROTÉGÉES (Admin, Ruchers, Automation, etc.) dans UN SEUL BLOC
+    // ✅ TOUTES LES ROUTES PROTÉGÉES dans UN SEUL BLOC
     {
         path: '',
-        canActivate: [AuthGuard], // <-- Une seule fois ici
+        canActivate: [AuthGuard],
         component: LayoutComponent,
-
+        resolve: { initialData: initialDataResolver },
         children: [
             { path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes') },
             { path: 'ruchers', loadChildren: () => import('app/modules/admin/list-ruchers/rucher.routes') },
@@ -63,10 +63,11 @@ export const appRoutes: Route[] = [
             { path: 'users', loadChildren: () => import('app/modules/admin/users/users.routes') },
             { path: 'profile', loadChildren: () => import('app/modules/admin/update-profile/profile.routes') },
             { path: 'dashboard', loadChildren: () => import('app/modules/admin/dashboard/dashboard.routes') },
-
-
-
-
+            // Nouvelles routes
+            { path: 'boutique', loadChildren: () => import('app/modules/boutique/boutique.routes') },
+            { path: 'mes-produits', loadChildren: () => import('app/modules/admin/produits/produits.routes') },
+            { path: 'commandes', loadChildren: () => import('app/modules/admin/commandes/commandes.routes') },
+            { path: 'mes-commandes', loadChildren: () => import('app/modules/client/mes-commandes/mes-commandes.routes') },
         ]
     }
 ];

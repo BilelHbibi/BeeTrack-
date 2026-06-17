@@ -70,14 +70,14 @@ export class AuthService {
      *
      * @param credentials
      */
-    signIn(credentials: { email: string; password: string }): Observable<any> {
+    signIn(credentials: { email: string; password?: string; motDePasse?: string }): Observable<any> {
         // Throw error, if the user is already logged in
         if (this._authenticated) {
             return throwError('User is already logged in.');
         }
 
         return this._httpClient
-            .post(`${this.endpointAuth}/login`, { ...credentials })
+            .post(`${this.endpointAuth}/login`, { email: credentials.email, motDePasse: credentials.motDePasse ?? credentials.password })
             .pipe(
                 switchMap((response: any) => {
                     // Store the access token in the local storage
@@ -92,9 +92,8 @@ export class AuthService {
             );
     }
 
-    signUp(user: { name: string; email: string; password: string }): Observable<any> {
-        return this._httpClient.post(`${environment.api}/auth/register`,
-            user);
+    signUp(user: { nom: string; prenom: string; email: string; password: string; role?: string }): Observable<any> {
+        return this._httpClient.post(`${environment.api}/auth/register`, user);
     }
     confirmationSignUp(code: string, email: string): Observable<any> {
         return this._httpClient.post(`${this.endpointUsers}/confirmation-sign-up`, {
@@ -160,13 +159,11 @@ export class AuthService {
      * Sign out
      */
     signOut(): Observable<any> {
-        // Remove the access token from the local storage
         localStorage.removeItem('accessToken');
         localStorage.removeItem('connectedSite');
-
-        // Set the authenticated flag to false
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userId');
         this._authenticated = false;
-        // Return the observable
         return of(true);
     }
 

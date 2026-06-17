@@ -1,4 +1,4 @@
-// src/app/modules/admin/dashboard/dashboard.component.ts
+﻿// src/app/modules/admin/dashboard/dashboard.component.ts
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgForOf, NgIf } from "@angular/common";
@@ -24,9 +24,9 @@ Chart.register(...registerables);
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     @ViewChild('productionChart') productionChartRef!: ElementRef<HTMLCanvasElement>;
-    @ViewChild('etatChart') etatChartRef!: ElementRef<HTMLCanvasElement>; // ✅ Ajouté
+    @ViewChild('etatChart') etatChartRef!: ElementRef<HTMLCanvasElement>; // âœ… AjoutÃ©
     getTachesStatut(): Observable<any> {
-        return this.http.get<any>('http://localhost:8080/taches/statut');
+        return this.http.get<any>('http://localhost:8085/taches/statut');
     }tachesStatut: any = { accomplies: 0, enCours: 0, total: 0 };
     tachesEnCours: any[] = [];
     private tacheChart: Chart | null = null;
@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     @ViewChild('tacheChart') tacheChartRef!: ElementRef<HTMLCanvasElement>;
 
     getTachesEnCours(): Observable<any[]> {
-        return this.http.get<any[]>('http://localhost:8080/taches/en-cours');
+        return this.http.get<any[]>('http://localhost:8085/taches/en-cours');
     }
     ruchersActifs: number = 0;
     totalRuches: number = 0;
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     beneficeNet: number = 0;
 
     private chart: Chart | null = null;
-    private etatChart: Chart | null = null; // ✅ Ajouté
+    private etatChart: Chart | null = null; // âœ… AjoutÃ©
 
     constructor(
         private dashboardService: FinanceService,
@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ) {}
 
     getEtatRuches(): Observable<any> {
-        return this.http.get<any>('http://localhost:8080/api/dashboard/etat-ruches');
+        return this.http.get<any>('http://localhost:8085/api/dashboard/etat-ruches');
     }
 
     anneeCourante: number = new Date().getFullYear();
@@ -60,11 +60,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.loadDashboardData();
         this.getEtatRuches().subscribe(data => {
             this.etatData = data;
-            this.renderEtatChart(); // ✅ Appel du graphique
+            this.renderEtatChart(); // âœ… Appel du graphique
         });
         this.getTachesStatut().subscribe(data => {
             this.tachesStatut = data;
-            this.renderTacheChart(); // ← appel après chargement
+            this.renderTacheChart(); // â† appel aprÃ¨s chargement
 
         })
         this.getTachesEnCours().subscribe(data => {
@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if (this.chart) this.chart.destroy();
-        if (this.etatChart) this.etatChart.destroy(); // ✅ Nettoyage
+        if (this.etatChart) this.etatChart.destroy(); // âœ… Nettoyage
     }
 
     loadDashboardData(): void {
@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             error: (error: any) => {
                 console.error('Erreur dashboard :', error);
-                alert('Impossible de charger les données.');
+                alert('Impossible de charger les donnÃ©es.');
             }
         });
     }
@@ -102,8 +102,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (this.chart) this.chart.destroy();
 
         const labels = [
-            'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
-            'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'
+            'Jan', 'FÃ©v', 'Mar', 'Avr', 'Mai', 'Juin',
+            'Juil', 'AoÃ»t', 'Sept', 'Oct', 'Nov', 'DÃ©c'
         ];
 
         const quantites = productionMensuelle
@@ -131,7 +131,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        title: { display: true, text: 'Quantité (kg)' }
+                        title: { display: true, text: 'QuantitÃ© (kg)' }
                     },
                     x: {
                         title: { display: true, text: 'Mois' }
@@ -141,9 +141,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    // ✅ NOUVELLE MÉTHODE : Graphique état des ruches
+    // âœ… NOUVELLE MÃ‰THODE : Graphique Ã©tat des ruches
     renderEtatChart(): void {
-        console.log('Données reçues pour le graphique :', this.etatData.repartition);
+        console.log('DonnÃ©es reÃ§ues pour le graphique :', this.etatData.repartition);
 
         const ctx = this.etatChartRef.nativeElement.getContext('2d');
         if (!ctx || !this.etatData.repartition || this.etatData.repartition.length === 0) return;
@@ -202,13 +202,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (!ctx) return;
         if (this.tacheChart) this.tacheChart.destroy();
 
-        // ✅ CORRECTION : structure Chart.js VALIDE
+        // âœ… CORRECTION : structure Chart.js VALIDE
         this.tacheChart = new Chart(ctx, {
             type: 'doughnut',
-            data: { // ← "data" au même niveau que "type"
+            data: { // â† "data" au mÃªme niveau que "type"
                 labels: ['Accomplies', 'En cours'],
                 datasets: [{
-                    data: [this.tachesStatut.accomplies, this.tachesStatut.enCours], // ← "data:" obligatoire
+                    data: [this.tachesStatut.accomplies, this.tachesStatut.enCours], // â† "data:" obligatoire
                     backgroundColor: [
                         'rgba(34, 197, 94, 0.85)',
                         'rgba(59, 130, 246, 0.85)'
@@ -216,7 +216,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     borderWidth: 0
                 }]
             },
-            options: { // ← "options" au même niveau que "type" et "data"
+            options: { // â† "options" au mÃªme niveau que "type" et "data"
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -228,3 +228,4 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
 }
+
